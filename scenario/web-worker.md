@@ -1,4 +1,4 @@
-Web Workers – Heavy Lifting Example
+# Web Workers – Heavy Lifting Example
 <details> <summary>👉 Answer</summary>
 
 ✅ Main thread (index.html + script.js):
