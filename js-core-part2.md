@@ -1,12 +1,13 @@
-📘 JavaScript Interview Q&A (Part 2 – Async, Events & Event Loop)
-<details> <summary>17. Event Loop</summary>
+# 📘 JavaScript Interview Q&A (Part 2 – Async, Events & Event Loop)
+
+## 17. Event Loop
+<details> <summary>👉 Answer</summary>
 
 JavaScript is single-threaded.
 
-Event Loop checks the call stack & callback queue to execute tasks.
+The Event Loop checks the **call stack** & **callback queue** to execute tasks.
 
-👉 Example:
-
+```js
 console.log("Start");
 
 setTimeout(() => console.log("Timeout"), 0);
@@ -14,59 +15,63 @@ setTimeout(() => console.log("Timeout"), 0);
 Promise.resolve().then(() => console.log("Promise"));
 
 console.log("End");
-
-
 Output:
 
+sql
+Copy code
 Start
 End
 Promise
 Timeout
-
-
-Microtasks (Promises) run before macrotasks (setTimeout).
+👉 Microtasks (Promises) run before Macrotasks (setTimeout).
 
 </details>
-<details> <summary>18. Microtasks vs Macrotasks</summary>
+18. Microtasks vs Macrotasks
+<details> <summary>👉 Answer</summary>
+Microtasks: executed immediately after current script.
+Examples: Promise callbacks, queueMicrotask.
 
-Microtasks: executed immediately after current script (Promise callbacks, queueMicrotask).
+Macrotasks: scheduled tasks.
+Examples: setTimeout, setInterval, setImmediate, I/O.
 
-Macrotasks: scheduled tasks (setTimeout, setInterval, setImmediate, I/O).
-
+js
+Copy code
 console.log("1");
 
-setTimeout(() => console.log("2"), 0);  // macrotask
+setTimeout(() => console.log("2"), 0);   // macrotask
 Promise.resolve().then(() => console.log("3")); // microtask
 
 console.log("4");
-
-
 Output:
 
+Copy code
 1
 4
 3
 2
-
 </details>
-<details> <summary>19. Timers in JavaScript</summary>
-
+19. Timers in JavaScript
+<details> <summary>👉 Answer</summary>
 setTimeout(fn, delay) → run once after delay.
 
 setInterval(fn, delay) → run repeatedly.
 
 clearTimeout / clearInterval → stop them.
 
+js
+Copy code
 const id = setInterval(() => console.log("Tick"), 1000);
+
 setTimeout(() => clearInterval(id), 5000); // stops after 5s
-
 </details>
-<details> <summary>20. Polyfills</summary>
+20. Polyfills
+<details> <summary>👉 Answer</summary>
+A polyfill is a custom implementation of a feature when it's not available in a browser.
 
-Polyfill = custom implementation when feature not available in browser.
+👉 Example: Polyfill for Array.prototype.map
 
-👉 Example: Array.prototype.map
-
+js
+Copy code
 if (!Array.prototype.myMap) {
   Array.prototype.myMap = function (callback) {
     let res = [];
@@ -78,25 +83,25 @@ if (!Array.prototype.myMap) {
 }
 
 console.log([1,2,3].myMap(x => x*2)); // [2,4,6]
-
 </details>
-<details> <summary>21. Async vs Defer</summary>
-
+21. Async vs Defer
+<details> <summary>👉 Answer</summary>
 Async → Script loads in parallel, executes immediately after load.
+Defer → Script loads in parallel, executes after HTML parsing is complete.
 
-Defer → Script loads in parallel, executes after HTML parsing.
-
+html
+Copy code
 <script src="script.js" async></script>
 <script src="script.js" defer></script>
-
-
 👉 Use defer for DOM-dependent scripts.
 
 </details>
-<details> <summary>22. Debouncing</summary>
+22. Debouncing
+<details> <summary>👉 Answer</summary>
+Debouncing limits function execution → runs only after user stops triggering.
 
-Limits function execution → runs only after user stops triggering.
-
+js
+Copy code
 function debounce(fn, delay) {
   let timer;
   return function(...args) {
@@ -110,13 +115,14 @@ const search = debounce((q) => console.log("Searching:", q), 500);
 // Simulating user typing
 search("a");
 search("ab");
-search("abc"); // Only this executes
-
+search("abc"); // ✅ Only this executes
 </details>
-<details> <summary>23. Throttling</summary>
+23. Throttling
+<details> <summary>👉 Answer</summary>
+Throttling ensures function runs at most once in a given interval.
 
-Ensures function runs at most once in a given interval.
-
+js
+Copy code
 function throttle(fn, delay) {
   let last = 0;
   return function(...args) {
@@ -130,58 +136,50 @@ function throttle(fn, delay) {
 
 const log = throttle(() => console.log("Scroll event"), 1000);
 window.addEventListener("scroll", log);
-
 </details>
-<details> <summary>24. Storage in JS</summary>
+24. Storage in JS
+<details> <summary>👉 Answer</summary>
+Cookie → small, sent with HTTP requests (~4KB).
 
-Cookie: small, sent with HTTP requests, ~4KB.
+LocalStorage → ~5–10MB, persistent, not sent with requests.
 
-LocalStorage: ~5-10MB, persistent, not sent with requests.
+SessionStorage → ~5MB, cleared on tab close.
 
-SessionStorage: ~5MB, cleared on tab close.
-
+js
+Copy code
 localStorage.setItem("key", "value");
 sessionStorage.setItem("key", "value");
 document.cookie = "username=John; max-age=3600";
-
 </details>
-<details> <summary>25. Event Propagation</summary>
-1) Capturing Phase
+25. Event Propagation
+<details> <summary>👉 Answer</summary>
+1) Capturing Phase – Event travels top → down
 
-Event travels top → down.
-
+js
+Copy code
 parent.addEventListener("click", handler, true); // capture
+2) Target Phase – Event reaches target.
 
-2) Target Phase
+3) Bubbling Phase – Event travels child → parent (default)
 
-Event reaches target.
-
-3) Bubbling Phase
-
-Event travels child → parent (default).
-
+js
+Copy code
 parent.addEventListener("click", handler); // bubble
+4) stopPropagation – Stops bubbling/capturing
 
-4) stopPropagation
-
-Stops bubbling/capturing.
-
+js
+Copy code
 child.addEventListener("click", e => e.stopPropagation());
+5) preventDefault – Stops default action (e.g., form submit)
 
-5) preventDefault
-
-Stops default action (e.g., form submit).
-
+js
+Copy code
 form.addEventListener("submit", e => e.preventDefault());
+6) Event Delegation – Use parent to handle child events
 
-6) Event Delegation
-
-Use parent to handle child events.
-
+js
+Copy code
 document.getElementById("list").addEventListener("click", (e) => {
   if (e.target.tagName === "LI") console.log("Clicked:", e.target.innerText);
 });
-
-</details>
-
-✅ That’s Part 2: Async, Events, Event Loop
+</details> ```
