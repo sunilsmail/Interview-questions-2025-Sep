@@ -401,6 +401,7 @@ Metadata about the document (charset, viewport, SEO).
 
 ## 20. CSS Variables
 <details> <summary>👉 Answer</summary>
+
 ```css
 :root {
   --main-color: blue;
