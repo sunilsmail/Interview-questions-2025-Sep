@@ -282,6 +282,7 @@ Materialize
 
 ## 14. Browser Compatibility
 <details> <summary>👉 Answer</summary>
+
 ```css
 Use CSS Reset or normalize.css
 
