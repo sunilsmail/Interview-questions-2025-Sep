@@ -30,8 +30,8 @@ const arr = [10, 20, 30];
 console.log(arr.indexOf(20)); // 1
 console.log(arr.findIndex(x => x > 15)); // 1
 ```
-
 </details>
+
 ## 3. slice vs splice
 <details><summary>👉 Answer</summary>
 slice(start, end) → Returns shallow copy, does not modify original.
@@ -50,6 +50,7 @@ console.log(arr);              // [1,4]
 ```
 
 </details>
+
 ## 4. find vs filter
 <details><summary>👉 Answer</summary>
 find → Returns first matching element.
@@ -65,6 +66,7 @@ console.log(nums.filter(n => n > 10)); // [15,20]
 ```
 
 </details>
+
 ## 5. setTimeout vs setInterval
 <details><summary>👉 Answer</summary>
 setTimeout → Runs once after delay.
@@ -79,6 +81,7 @@ setInterval(() => console.log("Runs every second"), 1000);
 ```
 
 </details>
+
 ## 6. Object.create() vs Constructor Functions
 <details><summary>👉 Answer</summary>
 Object.create(proto) → Creates new object with prototype.
@@ -99,6 +102,7 @@ const p = new Person("John");
 p.say(); // John
 ```
 </details>
+
 ## 7. Function Expression vs Function Declaration
 <details><summary>👉 Answer</summary>
 Declaration → Hoisted, can be used before definition.
@@ -114,6 +118,7 @@ function sayHi() { console.log("Hi"); }
 const sayHello = function() { console.log("Hello"); };
 ```
 </details>
+
 ## 8. Debouncing vs Throttling
 <details><summary>👉 Answer</summary>
 Debounce → Run function only after certain delay without new calls.
@@ -144,6 +149,7 @@ function throttle(fn, delay) {
 }
 ```
 </details>
+
 ## 9. Arrow vs Normal Functions
 <details><summary>👉 Answer</summary>
 Arrow → No this, no arguments, shorter syntax.
@@ -162,6 +168,7 @@ obj.arrow();
 ```
 
 </details>
+
 ## 10. call vs apply vs bind
 <details><summary>👉 Answer</summary>
 call → Calls function with this, args comma-separated.
@@ -197,6 +204,7 @@ var x = 1;
 let y = 2;
 const z = 3;
 </details>
+
 ## 12. map vs forEach
 <details><summary>👉 Answer</summary>
 map → Returns new array.
@@ -212,6 +220,7 @@ console.log(nums.forEach(n => n * 2)); // undefined
 ```
 
 </details>
+
 ## 13. pop vs shift
 <details><summary>👉 Answer</summary>
 pop → Removes last element.
@@ -227,6 +236,7 @@ console.log(arr.shift()); // 1
 ```
 
 </details>
+
 ## 14. for-in vs for-of
 <details><summary>👉 Answer</summary>
 for-in → Iterates keys (including inherited).
@@ -242,6 +252,7 @@ for (let v of arr) console.log(v);   // a,b,c
 ```
 
 </details>
+
 ## 15. cookie vs sessionStorage vs localStorage
 <details><summary>👉 Answer</summary>
 Cookie → Sent to server, small size (~4KB).
@@ -272,6 +283,7 @@ defer → Loads in parallel, executes after HTML parsing.
 ```
 
 </details>
+
 ## 17. frozen vs sealed
 <details><summary>👉 Answer</summary>
 Object.freeze(obj) → No add/remove/change.
@@ -290,6 +302,7 @@ obj2.b = 2; // works
 ```
 
 </details>
+
 ## 18. Shallow Copy vs Deep Copy
 <details><summary>👉 Answer</summary>
 Shallow Copy → Copies top-level, nested objects still reference.
@@ -310,6 +323,7 @@ console.log(obj.y.z); // 99 (safe)
 ```
 
 </details>
+
 ## 19. Promise.all vs any vs race vs allSettled
 <details><summary>👉 Answer</summary>
 all → Resolves if all succeed, rejects if one fails.
@@ -327,6 +341,7 @@ Promise.race([p1, p2]);
 Promise.allSettled([p1, p2]);
 ```
 </details>
+
 ## 20. Pure vs Impure
 <details><summary>👉 Answer</summary>
 Pure Function → Same input → same output, no side effects.
