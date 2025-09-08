@@ -159,6 +159,8 @@ const obj = {
 
 obj.normal();
 obj.arrow();
+```
+
 </details>
 ## 10. call vs apply vs bind
 <details><summary>👉 Answer</summary>
