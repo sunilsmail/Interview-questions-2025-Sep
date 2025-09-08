@@ -1,4 +1,4 @@
-📘 JavaScript Interview Q&A (Part 2 – Async, Events & Event Loop)
+# 📘 JavaScript Interview Q&A (Part 2 – Async, Events & Event Loop)
 
 ## 17. Event Loop
 <details> <summary>👉 Answer</summary>
