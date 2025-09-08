@@ -3,6 +3,7 @@
 
 ✅ Main thread (index.html + script.js):
 
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +37,9 @@
   </script>
 </body>
 </html>
+```
 
+```js
 
 ✅ Worker thread (worker.js):
 
@@ -62,5 +65,6 @@ Main thread creates a Worker (new Worker("worker.js")).
 Worker does heavy computation (sum of 1 billion numbers).
 
 Result is sent back via postMessage without freezing UI.
+```
 
 </details>
