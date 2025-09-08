@@ -1,4 +1,4 @@
-# I’ll take the Part 4 content and restructure it exactly in the format you showed:
+# Part 4 Events
 
 ## 17. Event Propagation
 <details> <summary>👉 Answer</summary>
