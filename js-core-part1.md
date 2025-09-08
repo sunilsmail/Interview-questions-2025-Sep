@@ -52,6 +52,7 @@ arr.forEach(x => console.log(x));
 ```
 
 </details>
+
 ## 3. Functions
 <details> <summary>👉 Answer</summary>
 
@@ -75,6 +76,7 @@ const add = (a, b) => a + b;
 ```
 
 </details>
+
 ## 4. typeof Operator
 <details> <summary>👉 Answer</summary>
 
@@ -88,6 +90,7 @@ typeof (()=>{});// "function"
 ```
 
 </details>
+
 ## 5. Scope
 <details> <summary>👉 Answer</summary>
 
@@ -126,6 +129,7 @@ greet("John", () => console.log("Callback executed!"));
 ```
 
 </details>
+
 ## 7. Promises
 <details> <summary>👉 Answer</summary>
 
@@ -141,6 +145,7 @@ promise.then(res => console.log(res)).catch(err => console.error(err));
 ```
 
 </details>
+
 ## 8. Async/Await
 <details> <summary>👉 Answer</summary>
 
@@ -158,6 +163,7 @@ fetchData();
 ```
 
 </details>
+
 ## 9. Map, Filter, Reduce, forEach
 <details> <summary>👉 Answer</summary>
 
@@ -171,6 +177,7 @@ arr.forEach(x => console.log(x)); // prints each
 ```
 
 </details>
+
 ## 10. Spread & Rest
 <details> <summary>👉 Answer</summary>
 
@@ -187,6 +194,7 @@ console.log(sum(1,2,3)); // 6
 ```
 
 </details>
+
 ## 11. Closure
 <details> <summary>👉 Answer</summary>
 
@@ -207,6 +215,7 @@ console.log(counter()); // 2
 ```
 
 </details>
+
 ## 12. Hoisting
 <details> <summary>👉 Answer</summary>
 
@@ -223,6 +232,7 @@ function sayHi() { console.log("Hi"); }
 ```
 
 </details>
+
 ## 13. Temporal Dead Zone (TDZ)
 <details> <summary>👉 Answer</summary>
 
@@ -235,6 +245,7 @@ let x = 5;
 ```
 
 </details>
+
 ## 14. Call, Apply, Bind
 <details> <summary>👉 Answer</summary>
 
@@ -251,6 +262,7 @@ bound(); // Hey John
 ```
 
 </details>
+
 ## 15. This Keyword
 <details> <summary>👉 Answer</summary>
 
@@ -275,6 +287,7 @@ Arrow functions → lexical this
 ```
 
 </details>
+
 ## 16. Prototypes & Prototypal Inheritance
 <details> <summary>👉 Answer</summary>
 
