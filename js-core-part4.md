@@ -1,13 +1,17 @@
-🌀 Event Propagation
-❓ What are the phases of Event Propagation?
+# I’ll take the Part 4 content and restructure it exactly in the format you showed:
+
+## 17. Event Propagation
+<details> <summary>👉 Answer</summary>
+
+Phases of Event Propagation
 
 Capturing Phase – Event goes from root → target.
 
 Target Phase – Event reaches the actual target element.
 
 Bubbling Phase – Event bubbles from target → root.
+```html
 
-❓ Example: Bubbling vs Capturing
 <div id="parent">
   <button id="child">Click</button>
 </div>
@@ -27,30 +31,38 @@ document.getElementById("child").addEventListener("click", () => {
 </script>
 
 
-👉 Click button:
+👉 Click output:
 
 Parent capturing
 Child clicked
 Parent bubbling
 
-❓ stopPropagation vs preventDefault
+
+stopPropagation vs preventDefault
+
 document.getElementById("child").addEventListener("click", (e) => {
   e.stopPropagation(); // Stops bubbling
-  e.preventDefault();  // Prevents default action (e.g. link navigation)
+  e.preventDefault();  // Prevents default action
 });
 
-❓ Event Delegation Example
+
+Event Delegation Example
+
 document.getElementById("parent").addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
     console.log("Button clicked:", e.target.id);
   }
 });
+```
 
-🌀 Currying
-❓ What is Currying?
+</details>
 
-Transforming a function with multiple args into a sequence of functions with one arg each.
+## 18. Currying
+<details> <summary>👉 Answer</summary>
 
+Transforming a function with multiple arguments into a chain of single-argument functions.
+
+```js
 function sum(a) {
   return function(b) {
     return function(c) {
@@ -60,12 +72,14 @@ function sum(a) {
 }
 
 console.log(sum(1)(2)(3)); // 6
+```
+</details>
 
-🌀 Higher-Order Functions (HOFs)
-❓ Definition
+## 19. Higher-Order Functions (HOFs)
+<details> <summary>👉 Answer</summary>
 
 A function that takes another function as argument or returns a function.
-
+```js
 function hof(fn) {
   return function(x) {
     return fn(x) * 2;
@@ -74,9 +88,12 @@ function hof(fn) {
 
 const doubleSquare = hof((n) => n * n);
 console.log(doubleSquare(3)); // 18
+```
+</details>
 
-🌀 ES6 Features (Commonly Asked)
-
+## 20. ES6 Features
+<details> <summary>👉 Answer</summary>
+```js
 let and const
 
 Arrow functions
@@ -87,7 +104,7 @@ Default parameters
 
 Destructuring
 
-Spread/Rest operators
+Spread / Rest operators
 
 Classes
 
@@ -104,26 +121,31 @@ Generators
 Optional chaining (?.)
 
 Nullish coalescing (??)
+```
+</details>
 
-🌀 Debugging Techniques
+## 21. Debugging Techniques
+<details> <summary>👉 Answer</summary>
+```js
+console.log for values
 
-console.log for values.
+console.table for arrays/objects
 
-console.table for arrays/objects.
+console.time / console.timeEnd for performance
 
-console.time / console.timeEnd for performance.
+debugger; keyword to pause execution
 
-debugger; keyword to pause execution in DevTools.
+Chrome DevTools: Breakpoints, watch expressions
 
-Chrome DevTools: Breakpoints, watch expressions.
+Node.js Inspector: Run with node inspect
+```
+</details>
 
-Node.js Inspector: Run with node inspect.
-
-🌀 Generators
-❓ What is a Generator?
+## 22. Generators
+<details> <summary>👉 Answer</summary>
 
 A special function that can pause and resume using yield.
-
+```js
 function* gen() {
   yield 1;
   yield 2;
@@ -134,8 +156,12 @@ const g = gen();
 console.log(g.next().value); // 1
 console.log(g.next().value); // 2
 console.log(g.next().value); // 3
+```
+</details>
 
-🌀 Shallow Copy vs Deep Copy
+## 23. Shallow Copy vs Deep Copy
+<details> <summary>👉 Answer</summary>
+```js
 // Shallow Copy
 let obj1 = { a: 1, b: { c: 2 } };
 let shallow = { ...obj1 };
@@ -148,8 +174,14 @@ let deep = structuredClone(obj2);
 deep.b.c = 10;
 console.log(obj2.b.c); // 2
 
-🌀 Polyfills
-❓ Example: Polyfill for Array.map
+
+👉 Shallow copy shares references, deep copy clones nested objects.
+```
+</details>
+
+## 24. Polyfill for Array.map
+<details> <summary>👉 Answer</summary>
+```js
 Array.prototype.myMap = function(callback) {
   let result = [];
   for (let i = 0; i < this.length; i++) {
@@ -159,9 +191,12 @@ Array.prototype.myMap = function(callback) {
 };
 
 console.log([1, 2, 3].myMap(x => x * 2)); // [2, 4, 6]
+```
+</details>
 
-🌀 Throttling & Debouncing
-❓ Debounce Example
+## 25. Debouncing
+<details> <summary>👉 Answer</summary>
+```js
 function debounce(fn, delay) {
   let timer;
   return function(...args) {
@@ -174,7 +209,14 @@ window.addEventListener("resize", debounce(() => {
   console.log("Debounced resize");
 }, 300));
 
-❓ Throttle Example
+
+👉 Ensures function runs only after user stops triggering events for given delay.
+```
+</details>
+
+## 26. Throttling
+<details> <summary>👉 Answer</summary>
+```js
 function throttle(fn, limit) {
   let last = 0;
   return function(...args) {
@@ -191,4 +233,6 @@ window.addEventListener("scroll", throttle(() => {
 }, 500));
 
 
-✅ That completes Part 4 in .md format.
+👉 Ensures function runs at most once every X ms, even if triggered frequently.
+```
+</details>
