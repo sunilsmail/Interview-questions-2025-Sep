@@ -68,3 +68,88 @@ Result is sent back via postMessage without freezing UI.
 ```
 
 </details>
+
+
+Web Workers – Real-World Example (Image Processing)
+<details> <summary>👉 Answer</summary>
+
+✅ Main thread (index.html + script.js):
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Worker Image Processing</title>
+</head>
+<body>
+  <h2>Web Worker – Grayscale Image</h2>
+  <input type="file" id="upload" accept="image/*" />
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    let worker;
+
+    document.getElementById("upload").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const img = new Image();
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // Get image data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        // Create Worker
+        if (!worker) worker = new Worker("imageWorker.js");
+
+        // Receive processed data
+        worker.onmessage = (event) => {
+          ctx.putImageData(event.data, 0, 0);
+        };
+
+        // Send image data to worker
+        worker.postMessage(imageData);
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  </script>
+</body>
+</html>
+```
+
+```js
+✅ Worker thread (imageWorker.js):
+
+// imageWorker.js
+self.onmessage = function(event) {
+  const imageData = event.data;
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    // RGB average for grayscale
+    const avg = (data[i] + data[i+1] + data[i+2]) / 3;
+    data[i] = data[i+1] = data[i+2] = avg;
+  }
+
+  // Send back processed image
+  postMessage(imageData);
+};
+```
+
+<details>
+
+⚡ How it works:
+
+Main thread loads a large image and extracts pixel data.
+
+Worker receives pixel data and applies grayscale processing in a separate thread.
+
+Main thread receives processed data and updates the canvas without blocking UI.
+
+This approach is great for image filters, canvas manipulations, data-heavy computations, and real-time visualizations.
