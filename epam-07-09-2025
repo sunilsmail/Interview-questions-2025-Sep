@@ -1,0 +1,22 @@
+# JavaScript, Angular & Design Concepts – Interview Q&A
+
+---
+
+## 1. Creating Set and Get Methods on Object Properties
+You can define getters and setters using object shorthand or `Object.defineProperty`.
+
+```js
+const user = {
+  firstName: "John",
+  lastName: "Doe",
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  },
+  set fullName(name) {
+    [this.firstName, this.lastName] = name.split(" ");
+  },
+};
+
+console.log(user.fullName); // John Doe
+user.fullName = "Jane Smith";
+console.log(user.firstName); // Jane
