@@ -33,8 +33,8 @@ Constructor functions
 
 ES6 Classes
 ```
-
 </details>
+
 ## 2. Arrays in JavaScript
 <details> <summary>👉 Answer</summary>
 
