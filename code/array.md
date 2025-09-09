@@ -10,7 +10,7 @@ function insertAt(arr, index, value) {
 const array = [1, 2, 4, 5];
 insertAt(array, 2, 3)
 console.log(array)
-o/p: [1,2,3,4,5]
+o/p: [1, 2, 3, 4, 5]
 
 function removeAt(arr, index) {
     for (let i = index; i < arr.length - 1; i++) {
@@ -22,6 +22,6 @@ function removeAt(arr, index) {
 const array1 = [1, 2, 2, 4, 5];
 removeAt(array1, 2)
 console.log(array1)
-o/p: [1,2,4,5]
+o/p: [1, 2, 4, 5]
 
 ```
