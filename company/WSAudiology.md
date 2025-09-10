@@ -1,4 +1,4 @@
-1. Move all duplicates to the end of an array
+## 1. Move all duplicates to the end of an array
 <details> <summary>👉 Answer</summary>
 
 Logic: Use a set to track seen elements, maintain order for unique elements, and push duplicates at the end.
@@ -42,7 +42,7 @@ print(move_duplicates([1,2,3,2,4,3,5]))
 # Output: [1,2,3,4,5,2,3]
 ```
 </details>
-2. Insert records in chunks
+## 2. Insert records in chunks
 <details> <summary>👉 Answer</summary>
 
 Problem: DB supports only limited inserts per batch.
@@ -73,7 +73,7 @@ saveInChunks([1,2,3,4,5,6,7], 3);
 // Saving [1,2,3] [4,5,6] [7]
 ```
 </details>
-3. Class vs Record in C#
+## 3. Class vs Record in C#
 <details> <summary>👉 Answer</summary>
 
 Class: Reference type, mutable, equality by reference.
@@ -97,7 +97,7 @@ var r2 = new PersonRecord("Sunil");
 Console.WriteLine(r1.Equals(r2)); // True (value equality)
 ```
 </details>
-4. Topic vs Queue in Azure
+## 4. Topic vs Queue in Azure
 <details> <summary>👉 Answer</summary>
 
 Queue: Point-to-point, one consumer processes a message.
@@ -111,7 +111,7 @@ Queue → Order service sends message → Only Billing service consumes.
 Topic → Order service sends message → Billing + Notification + Analytics all receive.
 
 </details>
-5. CAP Theorem
+## 5. CAP Theorem
 <details> <summary>👉 Answer</summary>
 
 CAP Theorem: A distributed system can provide only 2 out of 3 guarantees:
@@ -131,7 +131,7 @@ AP: Cassandra (available but may show stale data).
 CA: Traditional relational DB (not partition tolerant).
 
 </details>
-6. SOLID Principles
+## 6. SOLID Principles
 <details> <summary>👉 Answer</summary>
 
 S – Single Responsibility Principle
@@ -169,7 +169,7 @@ const app = new App(new MySQLDatabase());
 app.run();
 ```
 </details>
-7. Dependency Injection
+## 7. Dependency Injection
 <details> <summary>👉 Answer</summary>
 
 Definition: Providing dependencies from outside instead of creating inside.
@@ -194,7 +194,7 @@ const service = new UserService(mockRepo);
 console.log(service.repo.getUser()); // Mock User
 ```
 </details>
-8. useEffect vs useReducer in React
+## 8. useEffect vs useReducer in React
 <details> <summary>👉 Answer</summary>
 
 useEffect: For side effects like API calls, timers, subscriptions.
@@ -243,7 +243,7 @@ function Counter() {
 }
 ```
 </details>
-9. Onion Architecture vs Clean Architecture
+## 9. Onion Architecture vs Clean Architecture
 <details> <summary>👉 Answer</summary>
 
 Onion Architecture: Layers are concentric circles. Domain is core, infrastructure is outer.
@@ -266,7 +266,7 @@ Onion: Repositories, Services, Controllers.
 Clean: Entities, Use Cases, Presenters, Gateways.
 
 </details>
-10. Does MongoDB support Joins?
+## 10. Does MongoDB support Joins?
 <details> <summary>👉 Answer</summary>
 
 MongoDB doesn’t support joins like SQL, but you can use $lookup for similar functionality.
@@ -435,4 +435,103 @@ $lookup with pipeline = super powerful for filtering/joining multiple conditions
 
 This will join orders with customers.
 
+</details>
+
+## 11. Debouncing, Memoization, Best Practices
+<details> <summary>👉 Answer</summary>
+
+Great question 🚀 – this is a real-world frontend interview favorite. You want a search input with:
+
+Debouncing → Avoid API calls on every keystroke.
+
+Memoization (caching) → Avoid refetching for the same query.
+
+Best Practices → Error handling, loading states, cleanup.
+
+Example:
+```js
+import { useState, useEffect, useCallback, useRef } from "react";
+
+// Utility: debounce
+function debounce(func, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+}
+
+export default function SearchComponent() {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Cache previous results to avoid duplicate API calls
+  const cache = useRef({});
+
+  // API call function
+  const fetchResults = async (searchTerm) => {
+    if (!searchTerm) {
+      setResults([]);
+      return;
+    }
+
+    // ✅ Check cache first
+    if (cache.current[searchTerm]) {
+      setResults(cache.current[searchTerm]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Simulated API call (replace with real API)
+      const response = await fetch(`/api/search?q=${searchTerm}`);
+      if (!response.ok) throw new Error("Network error");
+      const data = await response.json();
+
+      // Save in cache
+      cache.current[searchTerm] = data;
+      setResults(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Memoized debounced search
+  const debouncedSearch = useCallback(debounce(fetchResults, 500), []);
+
+  // Run search when query changes
+  useEffect(() => {
+    debouncedSearch(query);
+    // cleanup not needed here because debounce handles it
+  }, [query, debouncedSearch]);
+
+  return (
+    <div className="p-4 max-w-md mx-auto">
+      <input
+        type="text"
+        placeholder="Search..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="w-full p-2 border rounded"
+      />
+
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+
+      <ul className="mt-2">
+        {results.map((item, index) => (
+          <li key={index} className="border-b py-1">{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+```
 </details>
