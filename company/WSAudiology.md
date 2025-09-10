@@ -283,6 +283,154 @@ db.orders.aggregate([
     }
   }
 ])
+
+MongoDB $lookup Detailed Explanation
+
+The query:
+
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",        // Collection to join with (customers)
+      localField: "customerId", // Field in "orders"
+      foreignField: "_id",      // Field in "customers"
+      as: "customerDetails"     // Output array field
+    }
+  }
+])
+
+1. Collections Setup (Example Data)
+
+orders collection
+
+[
+  { _id: 1, item: "Laptop", customerId: 101 },
+  { _id: 2, item: "Phone", customerId: 102 },
+  { _id: 3, item: "Tablet", customerId: 101 }
+]
+
+
+customers collection
+
+[
+  { _id: 101, name: "Alice", city: "New York" },
+  { _id: 102, name: "Bob", city: "London" },
+  { _id: 103, name: "Charlie", city: "Paris" }
+]
+
+2. What $lookup Does
+
+It performs a left outer join between the orders collection and the customers collection.
+
+It takes customerId from orders.
+
+Looks for matching _id in customers.
+
+Puts the matched docs inside a new array field customerDetails.
+
+3. Output of the Query
+[
+  {
+    _id: 1,
+    item: "Laptop",
+    customerId: 101,
+    customerDetails: [
+      { _id: 101, name: "Alice", city: "New York" }
+    ]
+  },
+  {
+    _id: 2,
+    item: "Phone",
+    customerId: 102,
+    customerDetails: [
+      { _id: 102, name: "Bob", city: "London" }
+    ]
+  },
+  {
+    _id: 3,
+    item: "Tablet",
+    customerId: 101,
+    customerDetails: [
+      { _id: 101, name: "Alice", city: "New York" }
+    ]
+  }
+]
+
+4. Important Points
+
+$lookup always creates an array (customerDetails), even if one match is found.
+
+If no match is found → customerDetails: [].
+
+It’s similar to LEFT OUTER JOIN in SQL.
+
+5. Flattening the Array ($unwind)
+
+If you want only one customer object instead of an array:
+
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",
+      localField: "customerId",
+      foreignField: "_id",
+      as: "customerDetails"
+    }
+  },
+  { $unwind: "$customerDetails" }
+])
+
+
+👉 Output:
+
+[
+  { _id: 1, item: "Laptop", customerId: 101, customerDetails: { _id: 101, name: "Alice", city: "New York" } },
+  { _id: 2, item: "Phone", customerId: 102, customerDetails: { _id: 102, name: "Bob", city: "London" } },
+  { _id: 3, item: "Tablet", customerId: 101, customerDetails: { _id: 101, name: "Alice", city: "New York" } }
+]
+
+6. $lookup with Pipeline (More Powerful)
+
+MongoDB 3.6+ allows using a pipeline for advanced joins.
+
+Example: Match only customers from "New York":
+
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",
+      let: { orderCustId: "$customerId" },  // pass variable
+      pipeline: [
+        { $match: { $expr: { $eq: ["$_id", "$$orderCustId"] } } },
+        { $match: { city: "New York" } }
+      ],
+      as: "customerDetails"
+    }
+  }
+])
+
+
+👉 Only orders from Alice (New York) will get joined.
+
+7. $lookup vs SQL Join
+
+Equivalent SQL:
+
+SELECT o._id, o.item, c.name, c.city
+FROM orders o
+LEFT JOIN customers c
+ON o.customerId = c._id;
+
+
+✅ In short:
+
+$lookup = MongoDB’s way of doing joins.
+
+Output always has an array field.
+
+Combine with $unwind and $project for clean results.
+
+$lookup with pipeline = super powerful for filtering/joining multiple conditions.
 ```
 
 This will join orders with customers.
