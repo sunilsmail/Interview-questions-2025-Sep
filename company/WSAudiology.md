@@ -42,6 +42,7 @@ print(move_duplicates([1,2,3,2,4,3,5]))
 # Output: [1,2,3,4,5,2,3]
 ```
 </details>
+
 ## 2. Insert records in chunks
 <details> <summary>👉 Answer</summary>
 
@@ -73,6 +74,7 @@ saveInChunks([1,2,3,4,5,6,7], 3);
 // Saving [1,2,3] [4,5,6] [7]
 ```
 </details>
+
 ## 3. Class vs Record in C#
 <details> <summary>👉 Answer</summary>
 
@@ -97,6 +99,7 @@ var r2 = new PersonRecord("Sunil");
 Console.WriteLine(r1.Equals(r2)); // True (value equality)
 ```
 </details>
+
 ## 4. Topic vs Queue in Azure
 <details> <summary>👉 Answer</summary>
 
@@ -111,6 +114,7 @@ Queue → Order service sends message → Only Billing service consumes.
 Topic → Order service sends message → Billing + Notification + Analytics all receive.
 
 </details>
+
 ## 5. CAP Theorem
 <details> <summary>👉 Answer</summary>
 
@@ -131,6 +135,7 @@ AP: Cassandra (available but may show stale data).
 CA: Traditional relational DB (not partition tolerant).
 
 </details>
+
 ## 6. SOLID Principles
 <details> <summary>👉 Answer</summary>
 
@@ -169,6 +174,7 @@ const app = new App(new MySQLDatabase());
 app.run();
 ```
 </details>
+
 ## 7. Dependency Injection
 <details> <summary>👉 Answer</summary>
 
@@ -194,6 +200,7 @@ const service = new UserService(mockRepo);
 console.log(service.repo.getUser()); // Mock User
 ```
 </details>
+
 ## 8. useEffect vs useReducer in React
 <details> <summary>👉 Answer</summary>
 
@@ -243,6 +250,7 @@ function Counter() {
 }
 ```
 </details>
+
 ## 9. Onion Architecture vs Clean Architecture
 <details> <summary>👉 Answer</summary>
 
