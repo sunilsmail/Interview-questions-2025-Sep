@@ -274,6 +274,7 @@ Onion: Repositories, Services, Controllers.
 Clean: Entities, Use Cases, Presenters, Gateways.
 
 </details>
+
 ## 10. Does MongoDB support Joins?
 <details> <summary>👉 Answer</summary>
 
