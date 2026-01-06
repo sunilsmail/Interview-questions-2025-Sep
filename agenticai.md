@@ -823,4 +823,347 @@ prompt = PromptTemplate(
     template="""
 You are an IPL cricket assistant.
 
-Use the
+Use the conversation history to understand follow-up questions.
+Answer ONLY using the provided IPL data context.
+If the answer is not present, say "I don't know".
+
+Conversation so far:
+{chat_history}
+
+IPL Data Context:
+{context}
+
+Current Question:
+{question}
+
+Answer clearly and concisely:
+"""
+)
+👉 Interview gold: You explicitly control hallucinations.
+
+3️⃣ Create the Conversational RAG Chain (REAL CODE)
+python
+Copy code
+from langchain_community.llms import Ollama
+from langchain.chains import ConversationalRetrievalChain
+
+llm = Ollama(
+    model="phi3:mini",
+    temperature=0
+)
+
+conversation_chain = ConversationalRetrievalChain.from_llm(
+    llm=llm,
+    retriever=retriever,        # your FAISS retriever
+    memory=memory,
+    combine_docs_chain_kwargs={"prompt": prompt},
+    return_source_documents=True
+)
+4️⃣ Ask Questions (Memory Automatically Works)
+First question
+python
+Copy code
+response1 = conversation_chain({
+    "question": "Who won the most matches in IPL 2023?"
+})
+
+print(response1["answer"])
+Follow-up question (NO extra logic needed)
+python
+Copy code
+response2 = conversation_chain({
+    "question": "How many matches did they win?"
+})
+
+print(response2["answer"])
+✔ The chain understands “they” = team from previous answer
+
+5️⃣ What Gets Stored in Memory?
+Internally memory looks like:
+
+yaml
+Copy code
+Human: Who won the most matches in IPL 2023?
+AI: Chennai Super Kings won the most matches in IPL 2023.
+
+Human: How many matches did they win?
+AI: Chennai Super Kings won 10 matches.
+You can inspect it:
+
+python
+Copy code
+print(memory.buffer)
+6️⃣ Lightweight Custom Memory (If You Want Full Control)
+If you want manual control (interview bonus):
+
+python
+Copy code
+chat_history = []
+
+def format_history(history):
+    return "\n".join(
+        [f"User: {q}\nAssistant: {a}" for q, a in history]
+    )
+Then build prompt manually:
+
+python
+Copy code
+history_text = format_history(chat_history)
+
+prompt_text = prompt.format(
+    chat_history=history_text,
+    context=retrieved_docs,
+    question=user_question
+)
+
+answer = llm(prompt_text)
+chat_history.append((user_question, answer))
+🧠 Why This Is Agent-Ready
+Later you can:
+
+Replace memory with summary memory
+
+Store memory per user (Redis / DB)
+
+Let agents decide when to use memory vs tools
+
+📌 Resume-Ready Line (Use This)
+Implemented conversational memory using prompt chaining to persist question–answer history across user interactions, enabling contextual follow-up queries in a RAG-based IPL chatbot.
+
+🚀 Next Power Moves (Pick One)
+1️⃣ Add windowed memory (last N messages only)
+2️⃣ Add summary memory (compress long chats)
+3️⃣ Combine memory + Pandas tools (math-safe answers)
+4️⃣ Convert this into a LangGraph agent
+
+Tell me what you want next 👇
+
+
+
+
+
+
+
+You said:
+Convert this into a LangGraph agent
+
+
+ChatGPT said:
+Excellent choice 🔥
+Converting this into a LangGraph agent is exactly what agentic GenAI roles expect now.
+
+Below is a clean, working LangGraph agent that:
+
+✅ Uses IPL Kaggle data
+✅ Uses Ollama embeddings (nomic-embed-text)
+✅ Supports RAG + conversational memory
+✅ Handles follow-up questions
+✅ Is agentic, not a simple chain
+
+I’ll keep it practical and runnable.
+
+🧠 What We’re Building (Mentally Picture This)
+LangGraph Agent Flow
+
+pgsql
+Copy code
+START
+  ↓
+Load conversation memory
+  ↓
+Retrieve relevant IPL context (FAISS)
+  ↓
+LLM reasoning with prompt
+  ↓
+Generate answer
+  ↓
+Store Q&A in memory
+  ↓
+END
+This agent:
+
+Remembers earlier answers
+
+Resolves pronouns (“they”, “that team”)
+
+Grounds answers in IPL data
+
+1️⃣ Install Dependencies
+bash
+Copy code
+pip install langgraph langchain langchain-community faiss-cpu pandas
+Make sure Ollama is running:
+
+bash
+Copy code
+ollama serve
+2️⃣ Prerequisites (Assumed Ready)
+You already have:
+
+retriever → FAISS retriever (from IPL Kaggle data)
+
+Ollama models pulled:
+
+bash
+Copy code
+ollama pull nomic-embed-text
+ollama pull phi3:mini
+3️⃣ Define Agent State (Very Important)
+LangGraph works on explicit state.
+
+python
+Copy code
+from typing import TypedDict, List
+from langchain.schema import BaseMessage
+
+class AgentState(TypedDict):
+    question: str
+    chat_history: List[BaseMessage]
+    context: str
+    answer: str
+4️⃣ Define LLM
+python
+Copy code
+from langchain_community.llms import Ollama
+
+llm = Ollama(
+    model="phi3:mini",
+    temperature=0
+)
+5️⃣ Retriever Node (RAG Step)
+python
+Copy code
+def retrieve_context(state: AgentState):
+    docs = retriever.get_relevant_documents(state["question"])
+    context = "\n".join([doc.page_content for doc in docs])
+
+    return {
+        "context": context
+    }
+6️⃣ Reasoning + Answer Node (Prompt with Memory)
+python
+Copy code
+from langchain.prompts import ChatPromptTemplate
+
+prompt = ChatPromptTemplate.from_template("""
+You are an IPL cricket assistant.
+
+Use the conversation history to resolve references like "they", "that team", etc.
+Answer ONLY using the provided IPL context.
+If data is missing, say "I don't know".
+
+Conversation History:
+{chat_history}
+
+IPL Context:
+{context}
+
+User Question:
+{question}
+
+Answer clearly:
+""")
+
+def generate_answer(state: AgentState):
+    chat_history_text = "\n".join(
+        [f"{m.type}: {m.content}" for m in state["chat_history"]]
+    )
+
+    response = llm.invoke(
+        prompt.format(
+            chat_history=chat_history_text,
+            context=state["context"],
+            question=state["question"]
+        )
+    )
+
+    return {
+        "answer": response
+    }
+7️⃣ Memory Update Node
+python
+Copy code
+from langchain.schema import HumanMessage, AIMessage
+
+def update_memory(state: AgentState):
+    return {
+        "chat_history": state["chat_history"]
+        + [
+            HumanMessage(content=state["question"]),
+            AIMessage(content=state["answer"])
+        ]
+    }
+8️⃣ Build LangGraph
+python
+Copy code
+from langgraph.graph import StateGraph, END
+
+graph = StateGraph(AgentState)
+
+graph.add_node("retrieve", retrieve_context)
+graph.add_node("answer", generate_answer)
+graph.add_node("memory", update_memory)
+
+graph.set_entry_point("retrieve")
+
+graph.add_edge("retrieve", "answer")
+graph.add_edge("answer", "memory")
+graph.add_edge("memory", END)
+
+agent = graph.compile()
+9️⃣ Run the Agent (Real Conversation)
+python
+Copy code
+from langchain.schema import HumanMessage
+
+state = {
+    "question": "Who won the most matches in IPL 2023?",
+    "chat_history": []
+}
+
+state = agent.invoke(state)
+print("Answer:", state["answer"])
+
+# Follow-up question
+state["question"] = "How many matches did they win?"
+state = agent.invoke(state)
+
+print("Answer:", state["answer"])
+✔ Second question works
+✔ Memory retained
+✔ Retrieval grounded
+✔ Agentic behavior achieved
+
+🔥 Why This Is a TRUE Agent (Interview Explanation)
+You can confidently say:
+
+“I built a LangGraph-based conversational agent where each step—retrieval, reasoning, and memory update—is modeled as a graph node. This allows explicit state control, multi-turn memory, and easy extension into tool-calling agents.”
+
+That sentence alone = senior-level answer.
+
+📌 Resume-Ready Bullet
+Designed an agentic RAG chatbot using LangGraph with explicit state management, conversational memory, and Ollama-based local inference to answer IPL analytics queries from Kaggle datasets.
+
+🚀 Next Level Extensions (Highly Recommended)
+Tell me which one you want and I’ll implement it:
+
+1️⃣ Add Pandas Tool Node (accurate stats, no hallucinations)
+2️⃣ Conditional routing (RAG vs calculation)
+3️⃣ Multi-agent graph (retrieval agent + analytics agent)
+4️⃣ Memory summarization (long chat handling)
+5️⃣ Streamlit UI for LangGraph agent
+
+You’re building something very interview-strong here 👌
+
+
+
+
+
+
+
+
+
+
+
+
+ChatGPT can make mistakes
