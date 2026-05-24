@@ -1,4 +1,5 @@
-“I usually approach code reviews in multiple layers instead of just checking whether the code works.
+## code review
+I usually approach code reviews in multiple layers instead of just checking whether the code works.
 
 First, I try to understand the business requirement or user story. Then I review whether the implementation actually solves the requirement in the simplest and most maintainable way.
 
@@ -21,4 +22,4 @@ If the PR is large, I usually review it in smaller logical sections instead of r
 
 I also appreciate good implementations during reviews because code review should feel collaborative rather than fault-finding.
 
-For critical changes, I sometimes pull the branch locally and test the flows myself before approving.”
+For critical changes, I sometimes pull the branch locally and test the flows myself before approving.
