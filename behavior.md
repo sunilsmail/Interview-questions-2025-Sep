@@ -30,11 +30,11 @@ For critical changes, I sometimes pull the branch locally and test the flows mys
 
 I usually break the feature into:
 
-business flows
-UI components
-backend/API dependencies
-data/state management
-validations and edge cases
-testing and deployment activities
+1. business flows
+2. UI components
+3. backend/API dependencies
+4. data/state management
+5. validations and edge cases
+6. testing and deployment activities
 
 Then I identify which parts can be developed independently and which have dependencies.”
