@@ -7,12 +7,12 @@ After that, I review technical aspects like:
 
 1. readability and naming conventions
 2. component reusability
-performance impacts
-edge case handling
-API/error handling
-security concerns
-unit test coverage
-coding standards followed by the team
+3. performance impacts
+4. edge case handling
+5. API/error handling
+6. security concerns
+7. unit test coverage
+8. coding standards followed by the team
 
 For frontend applications, I also check things like unnecessary re-renders, state management usage, accessibility, responsive behavior, and whether the logic can be modularized better.
 
