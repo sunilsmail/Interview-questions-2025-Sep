@@ -23,3 +23,18 @@ If the PR is large, I usually review it in smaller logical sections instead of r
 I also appreciate good implementations during reviews because code review should feel collaborative rather than fault-finding.
 
 For critical changes, I sometimes pull the branch locally and test the flows myself before approving.
+
+### Realistic Senior-Level Answer
+
+“When I get a large feature, I first try to understand the complete business workflow instead of immediately creating technical tasks.
+
+I usually break the feature into:
+
+business flows
+UI components
+backend/API dependencies
+data/state management
+validations and edge cases
+testing and deployment activities
+
+Then I identify which parts can be developed independently and which have dependencies.”
