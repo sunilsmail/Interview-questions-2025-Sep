@@ -5,8 +5,8 @@ First, I try to understand the business requirement or user story. Then I review
 
 After that, I review technical aspects like:
 
-readability and naming conventions
-component reusability
+1. readability and naming conventions
+2. component reusability
 performance impacts
 edge case handling
 API/error handling
